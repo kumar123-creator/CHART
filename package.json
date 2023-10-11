@@ -1,0 +1,23 @@
+{
+	"name": "my-chart",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@fontsource/fira-mono": "^4.5.10",
+		"@neoconfetti/svelte": "^1.0.0",
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/kit": "^1.20.4",
+		"svelte": "^4.0.5",
+		"vite": "^4.4.2"
+	},
+	"type": "module",
+	"dependencies": {
+		"@sveltejs/svelte-repl": "^0.4.1",
+		"@syncfusion/ej2-charts": "^23.1.40",
+		"devextreme": "^23.1.5"
+	}
+}
