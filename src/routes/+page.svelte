@@ -15,7 +15,7 @@
 		x: item.monthLabel,  // Assuming "monthLabel" is the X-axis value
 		y: item['Andy Barnes']  // Use the name of the series as the Y-axis value
 	  }));
-  
+      console.log(chartData);
 	  const chart = new Chart({
 		primaryXAxis: {
 		  valueType: 'Category',
