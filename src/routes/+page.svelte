@@ -1,80 +1,57 @@
 <script>
-	import { onMount } from "svelte";
-	import * as Chart from "@syncfusion/ej2-charts";
-	import {DataLabel} from "@syncfusion/ej2-charts";
+	import { onMount } from 'svelte';
+	import { Chart, ColumnSeries, Category } from '@syncfusion/ej2-charts';
+	import { Browser } from '@syncfusion/ej2-base';
+	Chart.Inject(ColumnSeries, Category);
+  
+	onMount(async () => {
+	  // Make an HTTP request to fetch data from the API
+	  const apiUrl = 'https://api.recruitly.io/api/dashboard/sales/data/opportunitymonthlyusermetrics?start=01%2F10%2F2022&end=01%2F10%2F2023&apiKey=TEST45684CB2A93F41FC40869DC739BD4D126D77';
+	  const response = await fetch(apiUrl);
+	  const data = await response.json();
 
-	let chartData = [];
-
-	const fetchChartData = async () => {
-		try {
-			const response = await fetch(
-				"https://api.recruitly.io/api/dashboard/sales/data/opportunitymonthlyusermetrics?start=01%2F10%2F2022&end=01%2F10%2F2023&apiKey=TEST45684CB2A93F41FC40869DC739BD4D126D77"
-			);
-			const data = await response.json();
-			 chartData = data; // Make chartData reactive
-			 console.log(chartData);
-			createChart();
-		} catch (error) {
-			console.error("Error fetching chart data", error);
-		}
-	};
-
-	const createChart = () => {
-		const chartElement = document.getElementById("chart");
-		if (chartElement) {
-			new Chart.Chart({
-				// Chart configuration
-				series: [
-					{
-						dataSource: chartData,
-						xName: "monthLabel",
-						yName: "0", // Adjust for the actual field name in your data
-						name: "Bob Shaw",
-						type: "Line",
-					},
-					{
-						dataSource: chartData,
-						xName: "monthLabel",
-						yName: "10", // Adjust for the actual field name in your data
-						name: "Andy Barnes",
-						type: "Line",
-					},
-					{
-						dataSource: chartData,
-						xName: "monthLabel",
-						yName: "0", // Adjust for the actual field name in your data
-						name: "Gary Williams",
-						type: "Line",
-					},
-				],
-				primaryXAxis: {
-					title: "Month",
-				},
-				primaryYAxis: {
-					title: "Opportunity Value",
-				},
-			}).appendTo(chartElement);
-		}
-	};
-
-	onMount(() => {
-		fetchChartData();
+  
+	  // Process the API response data to format it for the chart
+	  const chartData = data.map(item => ({
+		x: item.monthLabel,  // Assuming "monthLabel" is the X-axis value
+		y: item['Andy Barnes']  // Use the name of the series as the Y-axis value
+	  }));
+	  console.log(chartData);
+	  
+	  const chart = new Chart({
+		primaryXAxis: {
+		  valueType: 'Category',
+		  majorGridLines: { width: 0 }
+		},
+		primaryYAxis: {
+		  labelFormat: '{value}',
+		  title: 'Oppurtunity Value',
+		  edgeLabelPlacement: 'Shift',
+		  majorTickLines: { width: 0 },
+		  lineStyle: { width: 0 },
+		},
+		series: [
+		  {
+			type: 'Column',
+			dataSource: chartData,
+			xName: 'x',
+			width: 2,
+			yName: 'y',
+			name: 'Andy Barnes',
+			columnSpacing: 0.1,
+		  },
+		],
+	  });
+  
+	  chart.appendTo('#container');
 	});
-</script>
+  </script>
+  
+  <body>
+	<div id='container'></div>
+  </body>
   
   <style>
-	  #chart {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  /* Add styles for the chart title */
-  h2 {
-    text-align: center;
-    margin: 20px 0;
-  }
+	/* Your CSS styles here */
   </style>
-  <h2>Sales Chart</h2>
-  <div id="chart" style="height: 300px;"></div>
   
